@@ -1,0 +1,260 @@
+-- SQLINES DEMO *** le SQL Developer Data Modeler 20.4.1.406.0906
+-- SQLINES DEMO *** -05-29 20:47:44 EEST
+-- SQLINES DEMO *** le Database 12c
+-- SQLINES DEMO *** le Database 12c
+
+
+
+-- SQLINES DEMO *** no DDL - MDSYS.SDO_GEOMETRY
+
+-- SQLINES DEMO *** no DDL - XMLTYPE
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE campus_club (
+    name_campus      VARCHAR(25) NOT NULL,
+    address_campus   VARCHAR(25) NOT NULL,
+    distance_campus  DOUBLE NOT NULL,
+    bus_number       INTEGER NOT NULL,
+    onoma_club       VARCHAR(25) NOT NULL,
+    ktirio_club      VARCHAR(25) NOT NULL,
+    phone_club       INTEGER NOT NULL,
+    plithos_sport    INTEGER NOT NULL
+);
+
+ALTER TABLE campus_club ADD CONSTRAINT campus_club_pk PRIMARY KEY ( name_campus );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE didaskon (
+    code_didask           VARCHAR(25) NOT NULL,
+    on_epon_didask        VARCHAR(25) NOT NULL,
+    title_didask          VARCHAR(25) NOT NULL,
+    grafeio_didask        VARCHAR(25) NOT NULL,
+    tmima_name_tmima      VARCHAR(25) NOT NULL,
+    epoptis_name_epoptis  VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE didaskon ADD CONSTRAINT didaskon_pk PRIMARY KEY ( code_didask );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE didaskon_subject (
+    didaskon_code_didask  VARCHAR(25) NOT NULL,
+    subject_code_subject  VARCHAR(25) NOT NULL
+);
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE epitropi (
+    name_epitropis       VARCHAR(25) NOT NULL,
+    syxnothta_synedriwn  INTEGER NOT NULL,
+    sxolh_name_sxolhs    VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE epitropi ADD CONSTRAINT epitropi_pk PRIMARY KEY ( name_epitropis );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE epitropi_didaskon (
+    epitropi_name_epitropis  VARCHAR(25) NOT NULL,
+    didaskon_code_didask     VARCHAR(25) NOT NULL
+);
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE epoptis (
+    name_epoptis VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE epoptis ADD CONSTRAINT epoptis_pk PRIMARY KEY ( name_epoptis );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE proapait_subject (
+    proapait_code         VARCHAR(25) NOT NULL,
+    name_proapait         VARCHAR(25) NOT NULL,
+    subject_code_subject  VARCHAR(25)
+);
+
+ALTER TABLE proapait_subject ADD CONSTRAINT proapait_subject_pk PRIMARY KEY ( proapait_code );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE program_tmima (
+    code_program      VARCHAR(25) NOT NULL,
+    title_program     VARCHAR(25) NOT NULL,
+    bathmida_program  VARCHAR(25) NOT NULL,
+    diarkeia_program  INTEGER NOT NULL,
+    tmima_name_tmima  VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE program_tmima ADD CONSTRAINT program_tmima_pk PRIMARY KEY ( code_program );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE sports (
+    name_sport               VARCHAR(30) NOT NULL,
+    campus_club_name_campus  VARCHAR(25)
+);
+
+ALTER TABLE sports ADD CONSTRAINT sports_pk PRIMARY KEY ( name_sport );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE student (
+    a_m_student                 VARCHAR(25) NOT NULL,
+    on_epon_student             VARCHAR(25) NOT NULL,
+    patrwnumo_student           VARCHAR(25) NOT NULL,
+    birth_student               DATETIME NOT NULL,
+    etos_eggrafhs               INTEGER NOT NULL,
+    program_tmima_code_program  VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE student ADD CONSTRAINT student_pk PRIMARY KEY ( a_m_student );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE subject (
+    code_subject                VARCHAR(25) NOT NULL,
+    name_subject                VARCHAR(25) NOT NULL,
+    program_tmima_code_program  VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE subject ADD CONSTRAINT subject_pk PRIMARY KEY ( code_subject );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE subject_student (
+    bathmologia           DOUBLE NOT NULL,
+    etos_dilosis          INTEGER NOT NULL,
+    eidos_subject         VARCHAR(25) NOT NULL COMMENT '(Epilogis/Ypoxrewtiko)',
+    subject_code_subject  VARCHAR(25) NOT NULL,
+    student_a_m_student   VARCHAR(25) NOT NULL,
+    apotelesma            VARCHAR(30) NOT NULL COMMENT 'Epituxhs/Anepituxhs Eksetash'
+);
+
+/* Moved to CREATE TABLE
+COMMENT ON COLUMN subject_student.eidos_subject IS
+    '(Epilogis/Ypoxrewtiko)'; */
+
+/* Moved to CREATE TABLE
+COMMENT ON COLUMN subject_student.apotelesma IS
+    'Epituxhs/Anepituxhs Eksetash'; */
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE sxolh (
+    name_sxolhs              VARCHAR(25) NOT NULL,
+    kosmhtoras               VARCHAR(25) NOT NULL,
+    ktirio_sxolhs            VARCHAR(25) NOT NULL,
+    campus_club_name_campus  VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE sxolh ADD CONSTRAINT sxolh_pk PRIMARY KEY ( name_sxolhs );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE tmima (
+    name_tmima         VARCHAR(25) NOT NULL,
+    ktirio_tmima       VARCHAR(25) NOT NULL,
+    sxolh_name_sxolhs  VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE tmima ADD CONSTRAINT tmima_pk PRIMARY KEY ( name_tmima );
+
+ALTER TABLE didaskon
+    ADD CONSTRAINT didaskon_epoptis_fk FOREIGN KEY ( epoptis_name_epoptis )
+        REFERENCES epoptis ( name_epoptis );
+
+ALTER TABLE didaskon_subject
+    ADD CONSTRAINT didaskon_subject_didaskon_fk FOREIGN KEY ( didaskon_code_didask )
+        REFERENCES didaskon ( code_didask );
+
+ALTER TABLE didaskon_subject
+    ADD CONSTRAINT didaskon_subject_subject_fk FOREIGN KEY ( subject_code_subject )
+        REFERENCES subject ( code_subject );
+
+ALTER TABLE didaskon
+    ADD CONSTRAINT didaskon_tmima_fk FOREIGN KEY ( tmima_name_tmima )
+        REFERENCES tmima ( name_tmima );
+
+ALTER TABLE epitropi_didaskon
+    ADD CONSTRAINT epitropi_didaskon_didaskon_fk FOREIGN KEY ( didaskon_code_didask )
+        REFERENCES didaskon ( code_didask );
+
+ALTER TABLE epitropi_didaskon
+    ADD CONSTRAINT epitropi_didaskon_epitropi_fk FOREIGN KEY ( epitropi_name_epitropis )
+        REFERENCES epitropi ( name_epitropis );
+
+ALTER TABLE epitropi
+    ADD CONSTRAINT epitropi_sxolh_fk FOREIGN KEY ( sxolh_name_sxolhs )
+        REFERENCES sxolh ( name_sxolhs );
+
+ALTER TABLE proapait_subject
+    ADD CONSTRAINT proapait_subject_subject_fk FOREIGN KEY ( subject_code_subject )
+        REFERENCES subject ( code_subject );
+
+ALTER TABLE program_tmima
+    ADD CONSTRAINT program_tmima_tmima_fk FOREIGN KEY ( tmima_name_tmima )
+        REFERENCES tmima ( name_tmima );
+
+ALTER TABLE sports
+    ADD CONSTRAINT sports_campus_club_fk FOREIGN KEY ( campus_club_name_campus )
+        REFERENCES campus_club ( name_campus );
+
+ALTER TABLE student
+    ADD CONSTRAINT student_program_tmima_fk FOREIGN KEY ( program_tmima_code_program )
+        REFERENCES program_tmima ( code_program );
+
+ALTER TABLE subject
+    ADD CONSTRAINT subject_program_tmima_fk FOREIGN KEY ( program_tmima_code_program )
+        REFERENCES program_tmima ( code_program );
+
+ALTER TABLE subject_student
+    ADD CONSTRAINT subject_student_student_fk FOREIGN KEY ( student_a_m_student )
+        REFERENCES student ( a_m_student );
+
+ALTER TABLE subject_student
+    ADD CONSTRAINT subject_student_subject_fk FOREIGN KEY ( subject_code_subject )
+        REFERENCES subject ( code_subject );
+
+ALTER TABLE sxolh
+    ADD CONSTRAINT sxolh_campus_club_fk FOREIGN KEY ( campus_club_name_campus )
+        REFERENCES campus_club ( name_campus );
+
+ALTER TABLE tmima
+    ADD CONSTRAINT tmima_sxolh_fk FOREIGN KEY ( sxolh_name_sxolhs )
+        REFERENCES sxolh ( name_sxolhs );
+
+
+
+-- SQLINES DEMO *** per Data Modeler Summary Report: 
+-- 
+-- SQLINES DEMO ***                        14
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                        27
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** DY                      0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***  TYPE                   0
+-- SQLINES DEMO ***  TYPE                   0
+-- SQLINES DEMO ***  TYPE BODY              0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** EGMENT                  0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** ED VIEW                 0
+-- SQLINES DEMO *** ED VIEW LOG             0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** A                       0
+-- SQLINES DEMO *** T                       0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
