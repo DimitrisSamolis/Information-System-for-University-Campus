@@ -1,2 +1,3 @@
 # Information-System-for-University-Campus
-Στην παρούσα εργασία δημιουργήσαμε μια πλήρως λειτουργική βάση δεδομένων όπου αποθηκεύονται τα δεδομένα ενός πανεπιστημίου. Χρησιμοποιήσαμε JAVA,UMLlet, SQL
+
+In this project I created a fully functional data base, that stores informations about a university campus. I used Java, UMLet, SQL .
